@@ -6,15 +6,15 @@
     <name>electrolavash</name>
 
     <component>
-        <component-type>ru.electrolavash.component.Wait</component-type>
-        <component-class>ru.electrolavash.component.Wait</component-class>
+        <component-type>ru.electrolavash.component.wait.Wait</component-type>
+        <component-class>ru.electrolavash.component.wait.Wait</component-class>
     </component>
 
     <render-kit>
         <renderer>
             <component-family>ru.electrolavash.component</component-family>
-            <renderer-type>ru.electrolavash.component.WaitRenderer</renderer-type>
-            <renderer-class>ru.electrolavash.component.WaitRenderer</renderer-class>
+            <renderer-type>ru.electrolavash.component.wait.WaitRenderer</renderer-type>
+            <renderer-class>ru.electrolavash.component.wait.WaitRenderer</renderer-class>
         </renderer>
     </render-kit>
 

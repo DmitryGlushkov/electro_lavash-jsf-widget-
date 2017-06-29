@@ -5,11 +5,32 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:q="http://electrolavash.ru/jsf/html" >
-   <f:view>
-      <h:outputLabel value="Hello, world"/>
-   </f:view>
-   <br/>
-   <q:wait id="wait1"/>
-asasas
+      xmlns:q="http://electrolavash.ru/jsf/html">
+
+<h:head/>
+
+<h:body>
+    Long running execution:
+    <br/>
+    <h:form>
+
+        <h:inputText id="inputText_id" value="#{test.title}"/>
+
+        <h:commandButton value="Start">
+            <f:ajax execute="inputText_id wait_id" render="outputText_id" listener="#{test.processAjaxBehavior}" />
+        </h:commandButton>
+
+        <br/><br/>
+
+        <h:outputText id="outputText_id" value="#{test.title != null ? test.title : ''}"/>
+
+        <q:wait id="wait_id" />
+
+    </h:form>
+
+    <br/>
+
+</h:body>
+
+
 </html>

@@ -1,4 +1,4 @@
-package ru.electrolavash.component;
+package ru.electrolavash.component.wait;
 
 import javax.faces.component.UIComponent;
 import javax.faces.view.facelets.FaceletContext;
@@ -10,12 +10,12 @@ public class WaitHandler extends TagHandler {
 
     public WaitHandler(TagConfig config) {
         super(config);
-        System.out.println("WaitHandler");
+        System.out.println("WaitHandler [constr]");
     }
 
     @Override
     public void apply(FaceletContext faceletContext, UIComponent uiComponent) throws IOException {
-        System.out.println("apply");
+        System.out.println("WaitHandler | apply");
 
     }
 }
