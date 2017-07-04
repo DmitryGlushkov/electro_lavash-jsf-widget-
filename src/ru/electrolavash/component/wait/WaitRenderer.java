@@ -10,13 +10,13 @@ public class WaitRenderer extends Renderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
-        System.out.println("<-- decode");
+        System.out.println("[WaitRenderer] <-- decode");
         super.decode(context, component);
     }
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        System.out.println("--> encodeEnd");
+        System.out.println("[WaitRenderer] --> encodeEnd");
         final ResponseWriter writer = context.getResponseWriter();
         //writer.startElement();
 

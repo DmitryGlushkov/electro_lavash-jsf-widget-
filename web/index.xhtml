@@ -12,23 +12,26 @@
 <h:body>
     Long running execution:
     <br/>
+
     <h:form>
 
         <h:inputText id="inputText_id" value="#{test.title}"/>
 
-        <h:commandButton value="Start">
-            <q:waitAjax execute="inputText_id wait_id" render="outputText_id" listener="#{test.processAjaxBehavior}" event=""/>
+        <h:commandButton value="Start" actionListener="#{test.startLongTask}">
+
+            <q:waitAjax execute="inputText_id" render="outputText_id"/>
+
         </h:commandButton>
 
         <br/><br/>
 
         <h:outputText id="outputText_id" value="#{test.title != null ? test.title : ''}"/>
 
-        <q:wait id="wait_id" />
-
     </h:form>
 
     <br/>
+
+
 
 </h:body>
 

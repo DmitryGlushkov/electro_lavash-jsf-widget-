@@ -156,25 +156,6 @@
         </attribute>
         <attribute>
             <description><![CDATA[
-                <p class="changed_added_2_0">The name of the JavaScript
-                function that will handle UI events.</p>
-           ]]></description>
-            <name>onevent</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description><![CDATA[
-                <p class="changed_added_2_0">The name of the JavaScript
-                function that will handle errors.</p>
-
-            ]]></description>
-            <name>onerror</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description><![CDATA[
                 <p class="changed_added_2_0">Evaluates to
                 Collection<String>.  This is a space separated
                 list of client ids of components that will participate
