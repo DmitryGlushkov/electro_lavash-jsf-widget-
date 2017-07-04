@@ -17,7 +17,7 @@
         <h:inputText id="inputText_id" value="#{test.title}"/>
 
         <h:commandButton value="Start">
-            <f:ajax execute="inputText_id wait_id" render="outputText_id" listener="#{test.processAjaxBehavior}" />
+            <q:waitAjax execute="inputText_id wait_id" render="outputText_id" listener="#{test.processAjaxBehavior}" event=""/>
         </h:commandButton>
 
         <br/><br/>
