@@ -19,13 +19,17 @@
 
         <h:commandButton value="Start" actionListener="#{test.startLongTask}">
 
-            <q:waitAjax execute="inputText_id" render="outputText_id"/>
+            <q:blur execute="inputText_id" render="outputText_id" target="the_text"/>
 
         </h:commandButton>
 
         <br/><br/>
 
         <h:outputText id="outputText_id" value="#{test.title != null ? test.title : ''}"/>
+
+        <br/><br/>
+
+        <h:outputText id="the_text" value="BLUR ME PLEASE"/>
 
     </h:form>
 
