@@ -1,71 +1,36 @@
-
-
-var B = function () {
-    this.start = function () {
-        console.log("start");
+function getTargetElement(data) {
+    var target = data.source.attributes["target"];
+    if (target != undefined) {
+        var target_id = target.value;
+        var form_id = data.source.form.id;
+        var el_id = form_id + ':' + target_id;
+        return document.getElementById(el_id);
     }
-    this.stop = function () {
-        console.log("stop");
-    }
+    return undefined;
 }
 
 function blur_listener(data) {
-    var status = data.status;
-    switch (status) {
+    var target_element;
+    switch (data.status) {
         case "begin":
-            console.log("begin");
-            //B.start();
+            target_element = getTargetElement(data);
+            if (target_element != undefined) {
+                blur(target_element);
+            }
             break;
         case "complete":
-            console.log("complete");
-            //B.stop();
+            target_element = getTargetElement(data);
+            if (target_element != undefined) {
+                unblur(target_element);
+            }
             break;
-        case "success":
-            console.log('success');
-            break;
     }
 }
 
-function myMove() {
-    var elem = document.getElementById("animate");
-    var pos = 0;
-    var id = setInterval(frame, 5);
-    function frame() {
-        if (pos == 350) {
-            clearInterval(id);
-        } else {
-            pos++;
-            elem.style.top = pos + 'px';
-            elem.style.left = pos + 'px';
-        }
-    }
+function blur(target) {
+    target.classList.add("blur");
 }
 
-
-function blur() {
-    console.log('-> blur');
-    //document.body.className += " blur";
-    //document.body.classList.add("blur");
-    var body = document.body;
-    body.style.setProperty('filter', 'blur(5px)');
-
-    var id = setInterval(frame, 5);
-    var i = 0;
-    function frame() {
-        i++;
-        console.log(i);
-        /*if (pos == 350) {
-            clearInterval(id);
-        } else {
-            pos++;
-            elem.style.top = pos + 'px';
-            elem.style.left = pos + 'px';
-        }*/
-    }
-
-}
-
-function unblur() {
-    console.log('-> unblur');
-    //document.body.classList.remove("blur");
+function unblur(target) {
+    target.classList.remove("blur");
 }

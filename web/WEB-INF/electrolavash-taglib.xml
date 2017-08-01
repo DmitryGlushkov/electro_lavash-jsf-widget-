@@ -5,40 +5,6 @@
                 version="2.0">
     <namespace>http://electrolavash.ru/jsf/html</namespace>
 
-    <tag>
-        <tag-name>wait</tag-name>
-        <handler-class>
-            ru.electrolavash.component.wait.WaitHandler
-        </handler-class>
-        <component>
-            <component-type>ru.electrolavash.component.wait.Wait</component-type>
-            <renderer-type>ru.electrolavash.component.wait.WaitRenderer</renderer-type>
-        </component>
-        <attribute>
-            <description><![CDATA[Unique identifier of the component in a namingContainer.]]></description>
-            <name>id</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description><![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]></description>
-            <name>rendered</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description><![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]></description>
-            <name>binding</name>
-            <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
-        </attribute>
-        <attribute>
-            <description><![CDATA[Specifies if the detail of message should be displayed. Default is false.]]></description>
-            <name>showDetail</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-    </tag>
 
     <tag>
         <tag-name>blur</tag-name>
@@ -177,6 +143,15 @@
             <name>render</name>
             <required>false</required>
             <type>java.util.Collection</type>
+        </attribute>
+        <attribute>
+            <description><![CDATA[
+                <p class="changed_added_2_0">The name of the JavaScript
+                function that will handle UI events.</p>
+           ]]></description>
+            <name>onevent</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
 
