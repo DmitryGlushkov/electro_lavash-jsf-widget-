@@ -5,7 +5,7 @@ import javax.faces.bean.ManagedBean;
 @ManagedBean(name = "test")
 public class TestBean {
 
-    private static final long PERIOD = 1000L;
+    private static final long PERIOD = 4000L;
     private static final long DELAY = 1000L;
 
     private String title;
