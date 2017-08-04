@@ -19,13 +19,13 @@
 
         <h:commandButton value="Start" actionListener="#{test.startLongTask}">
 
-            <q:blur execute="inputText_id" render="outputText_id" target="the_text"/>
+            <q:blur target="the_text" log="logText_id"/>
 
         </h:commandButton>
 
         <br/><br/>
 
-        <h:outputText id="outputText_id" value="#{test.title != null ? test.title : ''}"/>
+        <h:outputText id="logText_id" value="log..."/>
 
         <br/><br/>
 

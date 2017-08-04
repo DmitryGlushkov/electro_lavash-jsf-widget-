@@ -12,7 +12,7 @@ class BlurAnimation {
         var xx = {value: 0.0};
 
         function blurFunction() {
-            if (xx.value >= 15) {
+            if (xx.value >= 6) {
                 clearInterval(interval);
             } else {
                 xx.value += 0.01;
@@ -33,15 +33,15 @@ class BlurAnimation {
             if (xx.value == 0.0) {
                 clearInterval(interval);
             } else {
-                xx.value -= 0.01;
+                xx.value -= 0.05;
                 target.style.filter = 'blur(' + xx.value + 'px)';
             }
         }
     }
 }
 
-function getTargetElement(data) {
-    var target = data.source.attributes["target"];
+function getElement(data, attr_name) {
+    var target = data.source.attributes[attr_name];
     if (target != undefined) {
         var target_id = target.value;
         var form_id = data.source.form.id;
@@ -53,14 +53,19 @@ function getTargetElement(data) {
 
 function blur_listener(data) {
     var target_element;
+    var logging_element;
     var anim;
     switch (data.status) {
         case "begin":
-            target_element = getTargetElement(data);
+            target_element = getElement(data, "target");
+            logging_element = getElement(data, "log");
             if (target_element != undefined) {
                 anim = new BlurAnimation();
                 ACTIVITY[target_element.id] = anim;
                 anim.start(target_element);
+            }
+            if (logging_element != undefined) {
+
             }
             break;
         case "complete":

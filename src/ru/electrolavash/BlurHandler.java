@@ -21,6 +21,7 @@ public class BlurHandler extends TagHandlerImpl {
     private final TagAttribute execute;
     private final TagAttribute render;
     private final TagAttribute target;
+    private final TagAttribute log;
     private final boolean wrapping;
 
     public BlurHandler(TagConfig config) {
@@ -28,6 +29,7 @@ public class BlurHandler extends TagHandlerImpl {
         this.execute = this.getAttribute("execute");
         this.render = this.getAttribute("render");
         this.target = this.getAttribute("target");
+        this.log = this.getAttribute("log");
         this.wrapping = isWrapping();
     }
 
@@ -40,6 +42,9 @@ public class BlurHandler extends TagHandlerImpl {
             }
             if (parent instanceof ClientBehaviorHolder) {
                 parent.getPassThroughAttributes(true).put("target", target.getValue());
+                if(log != null){
+                    parent.getPassThroughAttributes(true).put("log", log.getValue());
+                }
                 final ClientBehaviorHolder bHolder = (ClientBehaviorHolder) parent;
                 final String eventName = bHolder.getDefaultEventName();
                 final AjaxBehavior ajaxBehavior = createAjaxBehavior(ctx);
@@ -92,7 +97,7 @@ public class BlurHandler extends TagHandlerImpl {
         AjaxBehavior behavior = (AjaxBehavior) application.createBehavior(AjaxBehavior.BEHAVIOR_ID);
         setBehaviorAttribute(ctx, behavior, this.execute, Object.class);
         setBehaviorAttribute(ctx, behavior, this.render, Object.class);
-        setBehaviorAttribute(ctx, behavior, new TagAttributeImpl(render.getLocation(), render.getNamespace(), "onevent", "onevent", JS_FUNCTION), String.class);
+        setBehaviorAttribute(ctx, behavior, new TagAttributeImpl(target.getLocation(), target.getNamespace(), "onevent", "onevent", JS_FUNCTION), String.class);
         return behavior;
     }
 

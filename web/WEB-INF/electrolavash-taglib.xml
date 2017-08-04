@@ -5,13 +5,17 @@
                 version="2.0">
     <namespace>http://electrolavash.ru/jsf/html</namespace>
 
-
     <tag>
         <tag-name>blur</tag-name>
         <handler-class>ru.electrolavash.BlurHandler</handler-class>
         <attribute>
             <name>target</name>
             <required>true</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>log</name>
+            <required>false</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
