@@ -12,6 +12,7 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.view.facelets.*;
 import java.io.IOException;
+import java.util.UUID;
 
 public class BlurHandler extends TagHandlerImpl {
 
@@ -43,7 +44,7 @@ public class BlurHandler extends TagHandlerImpl {
             if (parent instanceof ClientBehaviorHolder) {
                 parent.getPassThroughAttributes(true).put("target", target.getValue());
                 if(log != null){
-                    parent.getPassThroughAttributes(true).put("log", log.getValue());
+                    parent.getPassThroughAttributes(true).put("log", UUID.randomUUID().toString());
                 }
                 final ClientBehaviorHolder bHolder = (ClientBehaviorHolder) parent;
                 final String eventName = bHolder.getDefaultEventName();

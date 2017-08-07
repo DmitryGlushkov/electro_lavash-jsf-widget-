@@ -5,6 +5,7 @@ class BlurAnimation {
     constructor() {
         this._xx = {value: 0.0};
         this._interval = undefined;
+        this._socket = undefined;
     }
 
     start(target) {
@@ -37,6 +38,20 @@ class BlurAnimation {
                 target.style.filter = 'blur(' + xx.value + 'px)';
             }
         }
+
+        if (this._socket != undefined) {
+            console.log("closing ...");
+            this._socket.onclose = function () {};
+            this._socket.close();
+        }
+    }
+
+    log() {
+        this._socket = socket_init();
+        var interval = setInterval(sendLogRequest, 0);
+        function sendLogRequest() {
+
+        }
     }
 }
 
@@ -63,13 +78,13 @@ function blur_listener(data) {
                 anim = new BlurAnimation();
                 ACTIVITY[target_element.id] = anim;
                 anim.start(target_element);
-            }
-            if (logging_element != undefined) {
-
+                if (logging_element != undefined) {
+                    anim.log();
+                }
             }
             break;
         case "complete":
-            target_element = getTargetElement(data);
+            target_element = getElement(data, "target");
             if (target_element != undefined) {
                 anim = ACTIVITY[target_element.id];
                 if (anim != undefined) {
@@ -79,4 +94,32 @@ function blur_listener(data) {
             }
             break;
     }
+}
+
+function socket_init() {
+
+    var socket = new WebSocket("ws://localhost:8989/log");
+
+    socket.onopen = function () {
+        console.log("Соединение установлено.");
+    };
+
+    socket.onclose = function (event) {
+        if (event.wasClean) {
+            console.log('Соединение закрыто чисто');
+        } else {
+            console.log('Обрыв соединения'); // например, "убит" процесс сервера
+        }
+        console.log('Код: ' + event.code + ' причина: ' + event.reason);
+    };
+
+    socket.onmessage = function (event) {
+        console.log("Получены данные " + event.data);
+    };
+
+    socket.onerror = function (error) {
+        console.log("Ошибка " + error.message);
+    };
+
+    return socket;
 }
