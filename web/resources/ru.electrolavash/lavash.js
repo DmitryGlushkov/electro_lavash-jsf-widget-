@@ -1,14 +1,16 @@
 var ACTIVITY = {};
+var logger_socket = socket_init();
 
 class BlurAnimation {
 
-    constructor() {
+    constructor(socket) {
         this._xx = {value: 0.0};
         this._interval = undefined;
-        this._socket = undefined;
+        this._socket = socket;
     }
 
     start(target) {
+        console.log("anim-start");
         var interval = setInterval(blurFunction, 0);
         var xx = {value: 0.0};
 
@@ -39,20 +41,8 @@ class BlurAnimation {
             }
         }
 
-        if (this._socket != undefined) {
-            console.log("closing ...");
-            this._socket.onclose = function () {};
-            this._socket.close();
-        }
     }
 
-    log() {
-        this._socket = socket_init();
-        var interval = setInterval(sendLogRequest, 0);
-        function sendLogRequest() {
-
-        }
-    }
 }
 
 function getElement(data, attr_name) {
@@ -66,6 +56,11 @@ function getElement(data, attr_name) {
     return undefined;
 }
 
+function get_blur_id(data) {
+    var attr = data.source.attributes["blurid"];
+    return attr.value;
+}
+
 function blur_listener(data) {
     var target_element;
     var logging_element;
@@ -73,14 +68,14 @@ function blur_listener(data) {
     switch (data.status) {
         case "begin":
             target_element = getElement(data, "target");
-            logging_element = getElement(data, "log");
+            blur_id = get_blur_id(data);
+            if(blur_id != undefined){
+                logger_socket.send(get_socket_object("register", blur_id));
+            }
             if (target_element != undefined) {
-                anim = new BlurAnimation();
+                anim = new BlurAnimation(logger_socket);
                 ACTIVITY[target_element.id] = anim;
                 anim.start(target_element);
-                if (logging_element != undefined) {
-                    anim.log();
-                }
             }
             break;
         case "complete":
@@ -101,6 +96,7 @@ function socket_init() {
     var socket = new WebSocket("ws://localhost:8989/log");
 
     socket.onopen = function () {
+
         console.log("Соединение установлено.");
     };
 
@@ -122,4 +118,10 @@ function socket_init() {
     };
 
     return socket;
+}
+
+function get_socket_object(action, data = null) {
+    var obj = {"action":action, "data":data};
+    return JSON.stringify(obj);
+
 }

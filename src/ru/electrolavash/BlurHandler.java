@@ -11,7 +11,9 @@ import javax.faces.component.behavior.AjaxBehavior;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.view.facelets.*;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.UUID;
 
 public class BlurHandler extends TagHandlerImpl {
@@ -35,6 +37,8 @@ public class BlurHandler extends TagHandlerImpl {
     }
 
     public void apply(FaceletContext ctx, UIComponent parent) throws IOException {
+        final  HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        System.out.println("apply");
         if (this.wrapping) {
             return;
         } else {
@@ -44,7 +48,14 @@ public class BlurHandler extends TagHandlerImpl {
             if (parent instanceof ClientBehaviorHolder) {
                 parent.getPassThroughAttributes(true).put("target", target.getValue());
                 if(log != null){
-                    parent.getPassThroughAttributes(true).put("log", UUID.randomUUID().toString());
+                    // тут магия
+                    final String ajaxHeader = req.getHeader("faces-request");
+                    if(ajaxHeader == null){
+                        final String blurId = UUID.randomUUID().toString();
+                        req.getSession().setAttribute("blurid", new String[]{blurId});
+                        System.out.println("getPassThroughAttributes : " + blurId);
+                        parent.getPassThroughAttributes(true).put("blurid", blurId);
+                    }
                 }
                 final ClientBehaviorHolder bHolder = (ClientBehaviorHolder) parent;
                 final String eventName = bHolder.getDefaultEventName();

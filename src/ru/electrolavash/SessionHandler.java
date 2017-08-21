@@ -9,13 +9,13 @@ public class SessionHandler {
 
     private static final Map<String, Session> sessionsMap = new HashMap<>();
 
-    public static void onSessionOpened(final Session session) {
-        sessionsMap.put(session.getId(), session);
+    public static void registerSession(final String id, final Session session) {
+        sessionsMap.put(id, session);
     }
 
-    public static void send(final String sessionId, final String message) {
+    public static void send(final String id, final String message) {
         try {
-            final Session session = sessionsMap.get(sessionId);
+            final Session session = sessionsMap.get(id);
             if (session != null) {
                 session.getBasicRemote().sendText(message);
             }

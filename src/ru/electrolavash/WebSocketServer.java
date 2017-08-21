@@ -1,18 +1,21 @@
 package ru.electrolavash;
 
 import javax.faces.bean.ApplicationScoped;
-import javax.inject.Inject;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
+
+import com.google.gson.Gson;
+import ru.electrolavash.SocketMessage;
+
 
 @ApplicationScoped
 @ServerEndpoint("/log")
 public class WebSocketServer {
 
+    private static final Gson gson = new Gson();
+
     @OnOpen
     public void open(Session session) {
-        SessionHandler.onSessionOpened(session);
-        System.out.println("open | " + session.getId());
         System.out.println("open | " + WebSocketServer.this);
     }
 
@@ -28,7 +31,13 @@ public class WebSocketServer {
     }
 
     @OnMessage
-    public void handleMessage(String message, Session session) {
-        System.out.println("handleMessage | " + message);
+    public void handleMessage(String json, Session session) {
+        System.out.println("handleMessage: " + json);
+        final SocketMessage sMessage = gson.fromJson(json, SocketMessage.class);
+        switch (sMessage.action) {
+            case SocketMessage.REG:
+                SessionHandler.registerSession(sMessage.data, session);
+                break;
+        }
     }
 }
