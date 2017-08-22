@@ -23,7 +23,7 @@ public class BlurHandler extends TagHandlerImpl {
     private static final String RENDER_TYPE_STYLE = "javax.faces.resource.Stylesheet";
     private final TagAttribute execute;
     private final TagAttribute render;
-    private final TagAttribute target;
+    private final TagAttribute targetClass;
     private final TagAttribute log;
     private final boolean wrapping;
 
@@ -31,7 +31,7 @@ public class BlurHandler extends TagHandlerImpl {
         super(config);
         this.execute = this.getAttribute("execute");
         this.render = this.getAttribute("render");
-        this.target = this.getAttribute("target");
+        this.targetClass = this.getAttribute("class");
         this.log = this.getAttribute("log");
         this.wrapping = isWrapping();
     }
@@ -46,7 +46,7 @@ public class BlurHandler extends TagHandlerImpl {
                 return;
             }
             if (parent instanceof ClientBehaviorHolder) {
-                parent.getPassThroughAttributes(true).put("target", target.getValue());
+                parent.getPassThroughAttributes(true).put("targetClass", targetClass.getValue());
                 if(log != null){
                     // тут магия
                     final String ajaxHeader = req.getHeader("faces-request");
@@ -109,7 +109,7 @@ public class BlurHandler extends TagHandlerImpl {
         AjaxBehavior behavior = (AjaxBehavior) application.createBehavior(AjaxBehavior.BEHAVIOR_ID);
         setBehaviorAttribute(ctx, behavior, this.execute, Object.class);
         setBehaviorAttribute(ctx, behavior, this.render, Object.class);
-        setBehaviorAttribute(ctx, behavior, new TagAttributeImpl(target.getLocation(), target.getNamespace(), "onevent", "onevent", JS_FUNCTION), String.class);
+        setBehaviorAttribute(ctx, behavior, new TagAttributeImpl(targetClass.getLocation(), targetClass.getNamespace(), "onevent", "onevent", JS_FUNCTION), String.class);
         return behavior;
     }
 

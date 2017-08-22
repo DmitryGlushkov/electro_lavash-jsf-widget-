@@ -10,33 +10,35 @@
 <h:head/>
 
 <h:body>
-    Long running execution:
-    <br/>
 
-    <h:form>
+    <div class="top">
+        <div class="top_container">
+            <h:form>
+                <h:commandButton value="Start Long-Running Operation" actionListener="#{test.startLongTask}" >
+                    <q:blur class="content" log="logText_id" />
+                </h:commandButton>
+            </h:form>
+        </div>
+    </div>
 
-        <h:commandButton value="Start" actionListener="#{test.startLongTask}">
-
-            <q:blur target="the_text" log="logText_id" />
-
-        </h:commandButton>
-
-        <br/><br/>
-
-        <h:outputText id="logText_id" value="log..."/>
-
-        <br/><br/>
-
-        <h:panelGroup id="the_text">
-            <h:outputText value="BLUR ME PLEASE"/>
-            <img src="https://www.android.com/static/2016/img/auto/on-your-car-screen_1x.jpg" alt="https://www.android.com/static/2016/img/auto/on-your-car-screen_1x.jpg"/>
-        </h:panelGroup>
-
-        <br/><br/>
-
-    </h:form>
-
-    <br/>
+    <div class="content">
+        <h1>Lorem Ipsum</h1>
+        <p>
+            Suspendisse pellentesque consectetur metus, et mollis libero tempus id. Vivamus vitae ipsum accumsan, laoreet libero eu, suscipit nibh. Nulla egestas molestie ex vitae faucibus. Duis hendrerit lectus et ligula egestas, ac iaculis metus euismod. Maecenas in mattis ante, nec tincidunt augue. Nullam auctor ut purus sed euismod. Morbi vitae condimentum nibh. Curabitur eu dictum mi. Sed luctus nisl quis neque elementum elementum. Duis quam lorem, aliquet vel elit sit amet, luctus hendrerit nisi. Ut vel tellus id nisi condimentum viverra vitae vel lorem. Nunc finibus semper quam sed cursus. Vestibulum imperdiet lectus urna, at pellentesque nunc imperdiet ut. Nam fringilla nisi quis felis rhoncus, non euismod nibh molestie. Nulla eget lacinia mauris. Donec feugiat elit id libero commodo posuere.
+        </p>
+        <p>
+            Mauris sem lacus, porta et facilisis a, luctus fringilla nisi. Etiam tortor ex, porta non velit non, auctor vulputate sapien. Aliquam venenatis sem et lobortis congue. In sagittis nisi ut velit tincidunt suscipit. Fusce quis orci purus. Suspendisse viverra, purus nec lacinia dapibus, arcu libero interdum risus, ut vehicula nulla libero nec magna. In hendrerit pharetra ultricies. Cras lacinia felis vel velit sollicitudin, vel fringilla erat semper. Proin nec felis sit amet lorem ullamcorper luctus. Donec ut efficitur dolor. Nulla ut enim in ante rhoncus accumsan a sit amet est. Sed metus tellus, aliquet nec placerat vel, vestibulum nec eros. Nam a tristique nunc.
+        </p>
+        <p>
+            Cras sollicitudin, lorem at fermentum cursus, nulla magna vehicula arcu, sit amet rutrum augue est maximus augue. Praesent varius eleifend purus vitae egestas. Vivamus sit amet ante non lectus vulputate volutpat. Ut tempus nisl finibus odio consequat finibus. In cursus maximus diam nec dapibus. Donec non lacus luctus, viverra ante eget, pellentesque ligula. Nunc sed dui ut nibh ultricies consequat.
+        </p>
+        <p>
+            Donec imperdiet ipsum vitae mauris scelerisque facilisis non egestas orci. Ut sodales lectus sed ex tincidunt, eu lacinia lacus ultrices. In hac habitasse platea dictumst. Morbi urna lectus, interdum ut eleifend sed, iaculis quis nunc. Cras ultricies iaculis ultricies. Cras sed risus augue. Vivamus vel augue et nulla dignissim dignissim.
+        </p>
+        <p>
+            Duis malesuada condimentum libero, ac pharetra mi dignissim nec. Cras fringilla nec orci vitae pretium. Integer sagittis nulla ut porta lobortis. Fusce arcu velit, aliquet ac porta ut, blandit non leo. Proin vitae fringilla tortor. Sed non neque quam. Sed consequat nunc est, id malesuada felis dapibus nec. Donec bibendum placerat turpis quis luctus. Maecenas vitae justo ut elit pellentesque mattis nec non erat. Proin maximus sem at sem facilisis vehicula.
+        </p>
+    </div>>
 
 </h:body>
 

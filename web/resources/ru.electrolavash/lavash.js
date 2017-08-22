@@ -45,13 +45,11 @@ class BlurAnimation {
 
 }
 
-function getElement(data, attr_name) {
-    var target = data.source.attributes[attr_name];
-    if (target != undefined) {
-        var target_id = target.value;
-        var form_id = data.source.form.id;
-        var el_id = form_id + ':' + target_id;
-        return document.getElementById(el_id);
+function get_elements(data) {
+    var target_class_name = data.source.attributes["targetClass"].value;
+    var elements = document.getElementsByClassName(target_class_name);
+    if (elements.length > 0) {
+        return elements;
     }
     return undefined;
 }
@@ -62,29 +60,35 @@ function get_blur_id(data) {
 }
 
 function blur_listener(data) {
-    var target_element;
-    var logging_element;
+    var i, len;
+    var target_elements;
+    var el;
     var anim;
     switch (data.status) {
         case "begin":
-            target_element = getElement(data, "target");
+            target_elements = get_elements(data);
             blur_id = get_blur_id(data);
-            if(blur_id != undefined){
+            if (blur_id != undefined) {
                 logger_socket.send(get_socket_object("register", blur_id));
             }
-            if (target_element != undefined) {
+
+            for (i = 0, len = target_elements.length; i < len; ++i) {
+                el = target_elements[i];
                 anim = new BlurAnimation(logger_socket);
-                ACTIVITY[target_element.id] = anim;
-                anim.start(target_element);
+                ACTIVITY[el.id] = anim;
+                anim.start(el);
             }
             break;
         case "complete":
-            target_element = getElement(data, "target");
-            if (target_element != undefined) {
-                anim = ACTIVITY[target_element.id];
-                if (anim != undefined) {
-                    anim.stop(target_element);
-                    ACTIVITY[target_element.id] = undefined;
+            target_elements = get_elements(data);
+            if (target_elements != undefined) {
+                for (i = 0, len = target_elements.length; i < len; ++i) {
+                    el = target_elements[i];
+                    anim = ACTIVITY[el.id];
+                    if (anim != undefined) {
+                        anim.stop(el);
+                        ACTIVITY[el.id] = undefined;
+                    }
                 }
             }
             break;
@@ -121,7 +125,7 @@ function socket_init() {
 }
 
 function get_socket_object(action, data = null) {
-    var obj = {"action":action, "data":data};
+    var obj = {"action": action, "data": data};
     return JSON.stringify(obj);
 
 }
