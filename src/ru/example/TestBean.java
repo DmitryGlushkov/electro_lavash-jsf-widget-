@@ -6,13 +6,10 @@ import javax.faces.bean.ManagedBean;
 @ManagedBean(name = "test")
 public class TestBean extends LogMessaging {
 
-    private static final long PERIOD = 4000L;
-    private static final long DELAY = 1000L;
-    private String title;
+    private static final long PERIOD = 6000L;
+    private static final long DELAY = 800L;
 
     public void startLongTask() {
-        System.out.println("! -----");
-        System.out.println("! BEGIN");
         try {
             final long endTime = System.currentTimeMillis() + PERIOD;
             while (true) {
@@ -24,15 +21,6 @@ public class TestBean extends LogMessaging {
         } catch (InterruptedException e) {
             System.out.println("InterruptedException");
         }
-        System.out.println("! END");
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
 }
