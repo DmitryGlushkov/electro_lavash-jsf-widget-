@@ -38,7 +38,6 @@ public class BlurHandler extends TagHandlerImpl {
 
     public void apply(FaceletContext ctx, UIComponent parent) throws IOException {
         final  HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        System.out.println("apply");
         if (this.wrapping) {
             return;
         } else {

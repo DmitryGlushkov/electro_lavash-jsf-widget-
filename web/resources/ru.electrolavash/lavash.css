@@ -37,11 +37,9 @@ body {
 }
 
 .log_info {
-    width: 30%;
-    height: 30%;
-    background: #97b5fd;
     top: 100px;
-    margin-left: 50%;
+    margin-left: 30%;
     position: absolute;
-
+    font-family: monospace;
+    color: green;
 }

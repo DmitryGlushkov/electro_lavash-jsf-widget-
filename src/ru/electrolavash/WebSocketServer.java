@@ -16,11 +16,12 @@ public class WebSocketServer {
 
     @OnOpen
     public void open(Session session) {
-        System.out.println("open | " + WebSocketServer.this);
+            System.out.println("open | " + WebSocketServer.this);
     }
 
     @OnClose
     public void close(Session session) {
+        SessionHandler.dismissSession(session);
         System.out.println("close");
     }
 

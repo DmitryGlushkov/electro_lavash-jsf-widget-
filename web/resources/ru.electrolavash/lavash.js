@@ -1,6 +1,41 @@
 var ACTIVITY = {};
 var logger_socket = socket_init();
-var logger_block = get_logger_block();
+
+function Logger() {
+
+    function init() {
+        var log = document.createElement('div');
+        var input = document.createElement('textarea');
+        input.name = 'post';
+        input.cols = 80;
+        input.rows = 40;
+        log.className = 'log_info';
+        log.appendChild(input);
+        return log;
+    }
+
+    this.logger_block = init();
+    this.attached = false;
+    this.submit_attach = function () {
+        this.logger_block.firstChild.textContent = "";
+        this.attached = true;
+        document.body.appendChild(this.logger_block);
+    };
+    this.submit_deattach = function () {
+        if (this.attached) {
+            this.logger_block.firstChild.textContent = "";
+            this.attached = false;
+            document.body.removeChild(this.logger_block);
+        }
+    };
+    this.log = function (text) {
+        this.logger_block.firstChild.textContent = text + this.logger_block.firstChild.textContent;
+    }
+
+}
+
+var logger = new Logger();
+
 var OPACITY_LIMIT = 0.7;
 
 class BlurAnimation {
@@ -12,7 +47,8 @@ class BlurAnimation {
     }
 
     start(target) {
-        var block = this.get_block();
+
+        var block = this.block_on();
         var interval = setInterval(blurFunction, 0);
         var xx = {value: 0.0};
 
@@ -41,39 +77,32 @@ class BlurAnimation {
         var xx = this._xx;
         var block = this._block;
 
-        var remove_block = function () {
-            if (block != undefined) {
-                document.body.removeChild(block);
-            }
-        };
-
         function unblurFunction() {
             if (xx.value <= 0.0) {
-                //remove_block();
                 clearInterval(interval);
+                document.body.removeChild(block);
+                logger.submit_deattach();
             } else {
                 xx.value -= 0.05;
                 target.style.filter = 'blur(' + xx.value + 'px)';
                 if (block.style.opacity > 0) {
-                    //block.style.opacity = xx.value / 6;
+                    block.style.opacity = xx.value / 6;
                 }
             }
         }
     }
 
-    get_block() {
+    block_on() {
         var block = document.createElement('div');
         block.className = 'block';
         block.style.opacity = 0;
-
-
-
         document.body.appendChild(block);
-        document.body.appendChild(log);
         return block;
     }
 
+    block_off() {
 
+    }
 }
 
 function get_elements(data) {
@@ -88,13 +117,6 @@ function get_elements(data) {
 function get_blur_id(data) {
     var attr = data.source.attributes["blurid"];
     return attr.value;
-}
-
-function get_logger_block() {
-    var log = document.createElement('div');
-    log.className = 'log_info';
-    log.textContent = "asasasas";
-    return log;
 }
 
 function blur_listener(data) {
@@ -152,7 +174,10 @@ function socket_init() {
     };
 
     socket.onmessage = function (event) {
-        console.log("Получены данные " + event.data);
+        if (!logger.attached) {
+            logger.submit_attach();
+        }
+        logger.log(event.data + '\n');
     };
 
     socket.onerror = function (error) {
