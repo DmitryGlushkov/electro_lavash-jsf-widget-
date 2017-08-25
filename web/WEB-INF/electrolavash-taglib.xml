@@ -7,155 +7,36 @@
 
     <tag>
         <tag-name>blur</tag-name>
-        <handler-class>ru.electrolavash.BlurHandler</handler-class>
+        <handler-class>ru.electrolavash.BlurHandler2</handler-class>
         <attribute>
-            <name>class</name>
-            <required>true</required>
-            <type>java.lang.String</type>
+            <name>class</name><required>true</required><type>java.lang.String</type>
         </attribute>
         <attribute>
-            <name>log</name>
-            <required>false</required>
-            <type>java.lang.String</type>
+            <name>disabled</name><required>false</required><type>java.lang.Boolean</type>
         </attribute>
         <attribute>
-            <name>effect</name>
-            <required>false</required>
-            <type>java.lang.String</type>
+            <name>delay</name><required>false</required><type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description><![CDATA[
-                <p class="changed_added_2_0">A value of "true" indicates
-                the
-                AjaxBehavior should not be rendered. A value of "false"
-                indicates
-                the AjaxBehavior should be rendered. "false" is the default.</p>
-
-            ]]></description>
-            <name>disabled</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
+            <name>resetValues</name><required>false</required><type>java.lang.Boolean</type>
         </attribute>
         <attribute>
-            <description><![CDATA[ <p class="changed_added_2_2">If less than
-          <em>delay</em> milliseconds elapses between calls to
-          <em>request()</em> only the most recent one is sent and all other
-          requests are discarded. If this option is not specified, or if the
-          value of <em>delay</em> is the literal string <code>'none'</code>
-          without the quotes, no delay is used. </p>
-
-          ]]></description>
-            <name>delay</name>
-            <required>false</required>
-            <type>java.lang.String</type>
+            <name>event</name><required>false</required><type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description><![CDATA[ <p class="changed_added_2_2">If
-          <code>true</code>, indicate that this particular Ajax transaction
-          is a value reset transaction.  This will cause
-          <code>resetValue()</code> to be called on any
-          <code>EditableValueHolder</code> instances encountered as a result
-          of this ajax transaction.  If not specified, or the value is
-          <code>false</code>, no such indication is made.</p>
-
-          ]]></description>
-            <name>resetValues</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-
-        <attribute>
-            <description><![CDATA[
-                <p class="changed_added_2_0">A String identifying the type
-                of event
-                the Ajax action will apply to. If specified, it must be one of
-                the
-                events supported by the component the Ajax behavior is being
-                applied to.
-                For HTML components this would be the set of supported DOM
-                events for the
-                component, plus "action" for Faces ActionSource components and
-                "valueChange"
-                for Faces EditableValueHolder components. If not specified, the
-                default
-                event is determined for the component. The DOM event name is the
-                actual DOM
-                event name (for example: "click") as opposed to (for example:
-                "onclick").</p>
-
-            ]]></description>
-            <name>event</name>
-            <required>false</required>
-            <type>java.lang.String</type>
+            <name>execute</name><required>false</required><type>java.util.Collection</type>
         </attribute>
         <attribute>
-            <description><![CDATA[
-                <p class="changed_added_2_0">Evaluates to
-                Collection<String>.  This is a space separated
-                list of client ids of components that will participate
-                in the "execute" portion of the Request Processing
-                Lifecycle. If a literal is specified the identifiers
-                must be space delimited. Any of the keywords "@this",
-                "@form", "@all", "@none" may be specified in the
-                identifier list.  If not specified, the default value of
-                "@this" is assumed.  <span
-                class="changed_modified_2_0_rev_a">For example,
-                <code>@this clientIdOne
-                clientIdTwo</code>.</span></p>
-            ]]></description>
-            <name>execute</name>
-            <required>false</required>
-            <type>java.util.Collection</type>
+            <name>immediate</name><required>false</required><type>java.lang.Boolean</type>
         </attribute>
         <attribute>
-            <description><![CDATA[
-                <p class="changed_added_2_0">If "true" behavior events
-                generated from this behavior
-                are broadcast during Apply Request Values phase. Otherwise, the
-                events will be
-                broadcast during Invoke Aplications phase</p>
-            ]]></description>
-            <name>immediate</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
+            <name>listener</name><required>false</required><method-signature>public voidprocessAjaxBehavior(javax.faces.event.AjaxBehaviorEvent event)throws javax.faces.event.AbortProcessingException</method-signature>
         </attribute>
         <attribute>
-            <description><![CDATA[
-                <p class="changed_added_2_0">Method expression referencing
-                a method
-                that will be called when an AjaxBehaviorEvent has been
-                broadcast for the listener.</p>
-            ]]></description>
-            <name>listener</name>
-            <required>false</required>
+            <name>onerror</name><required>false</required><type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description><![CDATA[
-                <p class="changed_added_2_0">Evaluates to
-                Collection<String>.  This is a space separated
-                list of client ids of components that will participate
-                in the "render" portion of the Request Processing
-                Lifecycle. If a literal is specified the identifiers
-                must be space delimited. Any of the keywords "@this",
-                "@form", "@all", "@none" may be specified in the
-                identifier list. If not specified, the default value of
-                "@none" is assumed.  <span
-                class="changed_modified_2_0_rev_a">For example,
-                <code>@this clientIdOne
-                clientIdTwo</code>.</span></p>
-            ]]></description>
-            <name>render</name>
-            <required>false</required>
-            <type>java.util.Collection</type>
-        </attribute>
-        <attribute>
-            <description><![CDATA[
-                <p class="changed_added_2_0">The name of the JavaScript
-                function that will handle UI events.</p>
-           ]]></description>
-            <name>onevent</name>
-            <required>false</required>
-            <type>java.lang.String</type>
+            <name>render</name><required>false</required><type>java.util.Collection</type>
         </attribute>
     </tag>
 

@@ -46,7 +46,7 @@ public class BlurHandler extends TagHandlerImpl {
             }
             if (parent instanceof ClientBehaviorHolder) {
                 parent.getPassThroughAttributes(true).put("targetClass", targetClass.getValue());
-                if(log != null){
+                /*if(log != null){
                     // тут магия
                     final String ajaxHeader = req.getHeader("faces-request");
                     if(ajaxHeader == null){
@@ -55,11 +55,12 @@ public class BlurHandler extends TagHandlerImpl {
                         System.out.println("getPassThroughAttributes : " + blurId);
                         parent.getPassThroughAttributes(true).put("blurid", blurId);
                     }
-                }
+                }*/
                 final ClientBehaviorHolder bHolder = (ClientBehaviorHolder) parent;
                 final String eventName = bHolder.getDefaultEventName();
                 final AjaxBehavior ajaxBehavior = createAjaxBehavior(ctx);
                 bHolder.addClientBehavior(eventName, ajaxBehavior);
+                bHolder.addClientBehavior("action2", ajaxBehavior);
                 installAjax();
             } else {
                 throw new TagException(this.tag, "Unable to attach <f:ajax> to non-ClientBehaviorHolder parent");
@@ -109,6 +110,7 @@ public class BlurHandler extends TagHandlerImpl {
         setBehaviorAttribute(ctx, behavior, this.execute, Object.class);
         setBehaviorAttribute(ctx, behavior, this.render, Object.class);
         setBehaviorAttribute(ctx, behavior, new TagAttributeImpl(targetClass.getLocation(), targetClass.getNamespace(), "onevent", "onevent", JS_FUNCTION), String.class);
+        setBehaviorAttribute(ctx, behavior, new TagAttributeImpl(targetClass.getLocation(), targetClass.getNamespace(), "logi", "logi", JS_FUNCTION), String.class);
         return behavior;
     }
 

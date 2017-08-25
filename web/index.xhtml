@@ -14,7 +14,9 @@
     <div class="top">
         <div class="top_container">
             <h:form>
+                <h:outputLabel id="lbl1"/>
                 <h:commandButton value="Start Long-Running Operation" actionListener="#{test.startLongTask}" >
+                    <f:param name="dmirt" value="glu"/>
                     <q:blur class="content" log="logText_id" />
                 </h:commandButton>
             </h:form>
