@@ -5,31 +5,33 @@ function Logger() {
 
     function init() {
         var log = document.createElement('div');
+        var div = document.createElement('div');
         var input = document.createElement('textarea');
-        input.name = 'post';
-        input.cols = 80;
-        input.rows = 40;
+        input.cols = 60;
+        input.rows = 25;
         log.className = 'log_info';
-        log.appendChild(input);
+        log.appendChild(div);
+        div.appendChild(input);
         return log;
     }
 
     this.logger_block = init();
+    this.text = this.logger_block.firstChild.firstChild;
     this.attached = false;
     this.submit_attach = function () {
-        this.logger_block.firstChild.textContent = "";
+        this.text.textContent = "";
         this.attached = true;
         document.body.appendChild(this.logger_block);
     };
     this.submit_deattach = function () {
         if (this.attached) {
-            this.logger_block.firstChild.textContent = "";
+            this.text.textContent = "";
             this.attached = false;
             document.body.removeChild(this.logger_block);
         }
     };
     this.log = function (text) {
-        this.logger_block.firstChild.textContent = text + this.logger_block.firstChild.textContent;
+        this.text.textContent = text + this.text.textContent;
     }
 
 }
@@ -100,9 +102,6 @@ class BlurAnimation {
         return block;
     }
 
-    block_off() {
-
-    }
 }
 
 function get_elements(data) {
@@ -115,7 +114,7 @@ function get_elements(data) {
 }
 
 function get_blur_id(data) {
-    var attr = data.source.attributes["blurid"];
+    var attr = data.source.attributes["blur_id"];
     return attr.value;
 }
 
@@ -128,10 +127,7 @@ function blur_listener(data) {
         case "begin":
             target_elements = get_elements(data);
             blur_id = get_blur_id(data);
-            if (blur_id != undefined) {
-                logger_socket.send(get_socket_object("register", blur_id));
-            }
-
+            if (blur_id != undefined) logger_socket.send(get_socket_object("register", blur_id));
             for (i = 0, len = target_elements.length; i < len; ++i) {
                 el = target_elements[i];
                 anim = new BlurAnimation();
@@ -156,34 +152,14 @@ function blur_listener(data) {
 }
 
 function socket_init() {
-
-    var socket = new WebSocket("ws://localhost:8989/log");
-
-    socket.onopen = function () {
-
-        console.log("Соединение установлено.");
-    };
-
-    socket.onclose = function (event) {
-        if (event.wasClean) {
-            console.log('Соединение закрыто чисто');
-        } else {
-            console.log('Обрыв соединения'); // например, "убит" процесс сервера
-        }
-        console.log('Код: ' + event.code + ' причина: ' + event.reason);
-    };
-
+    var socket = new WebSocket("ws://" + window.location.host + "/blur_tag_logging");
+    socket.onopen  = function ()      { console.log("socket ON"); };
+    socket.onerror = function (error) { console.log("socket ERROR | " + error.message); };
+    socket.onclose = function (event) { console.log("socket CLOSE | " + event.code); };
     socket.onmessage = function (event) {
-        if (!logger.attached) {
-            logger.submit_attach();
-        }
+        if (!logger.attached) logger.submit_attach();
         logger.log(event.data + '\n');
     };
-
-    socket.onerror = function (error) {
-        console.log("Ошибка " + error.message);
-    };
-
     return socket;
 }
 

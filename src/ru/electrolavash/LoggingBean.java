@@ -4,16 +4,16 @@ import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
-public class LogMessaging {
+public class LoggingBean {
 
     private String blurId;
 
     @PostConstruct
     void init() {
         final HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        final Object idObject = req.getSession().getAttribute("blurid");
-        if (idObject != null) {
-            blurId = ((String[]) idObject)[0];
+        final String[] paramArray = req.getParameterMap().get("blur_id");
+        if (paramArray != null && paramArray.length > 0) {
+            blurId = paramArray[0];
         }
     }
 

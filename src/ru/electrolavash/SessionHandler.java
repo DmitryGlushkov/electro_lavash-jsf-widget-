@@ -25,7 +25,6 @@ public class SessionHandler {
     }
 
     public static void dismissSession(final Session session) {
-        System.out.println("dismissSession");
         String id = null;
         for (final Map.Entry<String, Session> e : sessionsMap.entrySet()) {
             if (e.getValue() == session) {
@@ -34,7 +33,6 @@ public class SessionHandler {
             }
         }
         if (id != null) sessionsMap.remove(id);
-        System.out.println("" + sessionsMap.size());
     }
 
 }
