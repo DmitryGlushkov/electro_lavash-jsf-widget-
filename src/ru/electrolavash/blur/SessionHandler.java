@@ -1,4 +1,4 @@
-package ru.electrolavash;
+package ru.electrolavash.blur;
 
 import javax.websocket.Session;
 import java.io.IOException;

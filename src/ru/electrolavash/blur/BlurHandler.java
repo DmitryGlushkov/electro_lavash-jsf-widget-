@@ -1,4 +1,4 @@
-package ru.electrolavash;
+package ru.electrolavash.blur;
 
 import com.sun.faces.component.behavior.AjaxBehaviors;
 import com.sun.faces.facelets.tag.TagAttributeImpl;

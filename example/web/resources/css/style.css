@@ -1,0 +1,19 @@
+body {
+    margin: 0;
+}
+
+.content {
+    width: 960px;
+    margin: 0 auto;
+}
+
+.top_container {
+    width: 960px;
+    margin: 0 auto;
+}
+
+.top {
+    background: #97b5fd;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}

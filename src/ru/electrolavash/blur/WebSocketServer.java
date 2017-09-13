@@ -1,11 +1,10 @@
-package ru.electrolavash;
+package ru.electrolavash.blur;
 
 import javax.faces.bean.ApplicationScoped;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 
 import com.google.gson.Gson;
-import ru.electrolavash.SocketMessage;
 
 @ApplicationScoped
 @ServerEndpoint("/blur_tag_logging")

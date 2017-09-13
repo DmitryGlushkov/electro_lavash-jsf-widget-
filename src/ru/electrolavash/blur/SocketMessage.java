@@ -1,4 +1,4 @@
-package ru.electrolavash;
+package ru.electrolavash.blur;
 
 public class SocketMessage {
 

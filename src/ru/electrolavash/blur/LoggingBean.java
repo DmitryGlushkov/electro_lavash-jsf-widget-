@@ -1,10 +1,11 @@
-package ru.electrolavash;
+package ru.electrolavash.blur;
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
 
-public class LoggingBean {
+public class LoggingBean implements Serializable{
 
     private String blurId;
 
