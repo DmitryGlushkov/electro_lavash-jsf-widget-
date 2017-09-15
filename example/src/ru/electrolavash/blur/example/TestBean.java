@@ -15,12 +15,12 @@ public class TestBean extends LoggingBean {
             final long endTime = System.currentTimeMillis() + PERIOD;
             while (true) {
                 final long stamp = System.currentTimeMillis();
-                //alert(String.format("Info: %d", stamp));
+                alert(String.format("Info: %d", stamp));
                 Thread.sleep(DELAY);
                 if (System.currentTimeMillis() >= endTime) break;
             }
         } catch (InterruptedException e) {
-            //alert(String.format("Error: %s", e.getMessage()));
+            alert(String.format("Error: %s", e.getMessage()));
         }
     }
 
