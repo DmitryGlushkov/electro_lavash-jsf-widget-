@@ -59,6 +59,7 @@ public class BlurHandler extends TagHandlerImpl implements BehaviorHolderAttache
     private final TagAttribute listener;
     private final TagAttribute delay;
     private final TagAttribute targetClass;
+    private final TagAttribute log;
 
     private final boolean wrapping;
 
@@ -75,6 +76,7 @@ public class BlurHandler extends TagHandlerImpl implements BehaviorHolderAttache
         this.listener = this.getAttribute("listener");
         this.delay = this.getAttribute("delay");
         this.targetClass = this.getAttribute("class");
+        this.log = this.getAttribute("log");
 
         this.wrapping = isWrapping();
     }
@@ -82,6 +84,7 @@ public class BlurHandler extends TagHandlerImpl implements BehaviorHolderAttache
     public void apply(FaceletContext ctx, UIComponent parent) throws IOException {
         final String blurId = getBlurId(parent);
         parent.getPassThroughAttributes(true).put("targetClass", targetClass.getValue());
+        if(log != null) parent.getPassThroughAttributes(true).put("log", log.getValue());
         parent.getPassThroughAttributes(true).put(PARAM_NAME, blurId);
 
         String eventName = getEventName();

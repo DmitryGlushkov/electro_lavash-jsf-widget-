@@ -1,5 +1,7 @@
 var ACTIVITY = {};
 var logger_socket = socket_init();
+var logger = new Logger();
+var OPACITY_LIMIT = 0.7;
 
 function Logger() {
 
@@ -18,12 +20,15 @@ function Logger() {
     this.logger_block = init();
     this.text = this.logger_block.firstChild.firstChild;
     this.attached = false;
+    this.enabled = false;
     this.submit_attach = function () {
+        if(!this.enabled) return;
         this.text.textContent = "";
         this.attached = true;
         document.body.appendChild(this.logger_block);
     };
     this.submit_deattach = function () {
+        if(!this.enabled) return;
         if (this.attached) {
             this.text.textContent = "";
             this.attached = false;
@@ -31,14 +36,13 @@ function Logger() {
         }
     };
     this.log = function (text) {
+        if(!this.enabled) return;
         this.text.textContent = text + this.text.textContent;
     }
-
+    this.set_enabled = function (b) {
+        this.enabled = b;
+    }
 }
-
-var logger = new Logger();
-
-var OPACITY_LIMIT = 0.7;
 
 class BlurAnimation {
 
@@ -118,6 +122,15 @@ function get_blur_id(data) {
     return attr.value;
 }
 
+function setup_log(data) {
+    var l = data.source.attributes["log"];
+    if (l != null) {
+        logger.set_enabled(data.source.attributes["log"].value == 'true');
+    } else {
+        logger.set_enabled(false);
+    }
+}
+
 function blur_listener(data) {
     var i, len;
     var target_elements;
@@ -125,6 +138,7 @@ function blur_listener(data) {
     var anim;
     switch (data.status) {
         case "begin":
+            setup_log(data);
             target_elements = get_elements(data);
             blur_id = get_blur_id(data);
             if (blur_id != undefined) logger_socket.send("register:" + blur_id);
