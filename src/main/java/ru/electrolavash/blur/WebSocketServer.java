@@ -4,14 +4,9 @@ import javax.faces.bean.ApplicationScoped;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 
-import com.google.gson.Gson;
-import jdk.nashorn.internal.parser.JSONParser;
-
 @ApplicationScoped
 @ServerEndpoint("/blur_tag_logging")
 public class WebSocketServer {
-
-    private static final Gson gson = new Gson();
 
     @OnOpen
     public void open(Session session) {
@@ -28,12 +23,16 @@ public class WebSocketServer {
     }
 
     @OnMessage
-    public void handleMessage(String json, Session session) {
-        final SocketMessage sMessage = gson.fromJson(json, SocketMessage.class);
-        switch (sMessage.action) {
-            case SocketMessage.REG:
-                SessionHandler.registerSession(sMessage.data, session);
-                break;
+    public void handleMessage(String message, Session session) {
+        final String[] split = message.split(":");
+        if(split.length == 2){
+            final String action = split[0];
+            final String data = split[1];
+            switch (action) {
+                case SocketMessage.REG:
+                    SessionHandler.registerSession(data, session);
+                    break;
+            }
         }
     }
 }

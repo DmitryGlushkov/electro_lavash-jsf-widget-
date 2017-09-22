@@ -127,7 +127,7 @@ function blur_listener(data) {
         case "begin":
             target_elements = get_elements(data);
             blur_id = get_blur_id(data);
-            if (blur_id != undefined) logger_socket.send(get_socket_object("register", blur_id));
+            if (blur_id != undefined) logger_socket.send("register:" + blur_id);
             for (i = 0, len = target_elements.length; i < len; ++i) {
                 el = target_elements[i];
                 anim = new BlurAnimation();
@@ -161,10 +161,4 @@ function socket_init() {
         logger.log(event.data + '\n');
     };
     return socket;
-}
-
-function get_socket_object(action, data = null) {
-    var obj = {"action": action, "data": data};
-    return JSON.stringify(obj);
-
 }

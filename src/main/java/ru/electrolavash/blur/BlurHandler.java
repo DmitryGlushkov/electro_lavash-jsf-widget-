@@ -4,7 +4,7 @@ import com.sun.faces.component.behavior.AjaxBehaviors;
 import com.sun.faces.facelets.tag.TagAttributeImpl;
 import com.sun.faces.facelets.tag.TagHandlerImpl;
 import com.sun.faces.facelets.tag.jsf.CompositeComponentTagHandler;
-import com.sun.faces.renderkit.RenderKitUtils;
+import com.sun.faces.util.RequestStateManager;
 
 import javax.el.ELContext;
 import javax.el.MethodExpression;
@@ -13,6 +13,7 @@ import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
 import javax.faces.component.UIParameter;
+import javax.faces.component.UIViewRoot;
 import javax.faces.component.behavior.AjaxBehavior;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
@@ -33,8 +34,19 @@ public class BlurHandler extends TagHandlerImpl implements BehaviorHolderAttache
 
     private static final String JS_FUNCTION = "blur_listener";
     private static final String PARAM_NAME = "blur_id";
+
     private static final String RENDER_TYPE_SCRIPT = "javax.faces.resource.Script";
     private static final String RENDER_TYPE_STYLE = "javax.faces.resource.Stylesheet";
+
+    public static final String SCRIPT_STATE_BLUR = "ru.electrolavash.blur.SCRIPT_STATE";
+
+    public static final String RESOURCE_NAME_JSF = "jsf.js";
+    public static final String RESOURCE_NAME_LAVASH_JS = "lavash.js";
+    public static final String RESOURCE_NAME_LAVASH_CSS = "lavash.css";
+
+    public static final String LIB_NAME_JSF = "javax.faces";
+    public static final String LIB_NAME_LAVASH = "ru.electrolavash";
+
 
     private final TagAttribute event;
     private final TagAttribute execute;
@@ -100,7 +112,7 @@ public class BlurHandler extends TagHandlerImpl implements BehaviorHolderAttache
     }
 
     private void applyWrapping(FaceletContext ctx, UIComponent parent, String eventName) throws IOException {
-        installAjaxResourceIfNecessary();
+        installResourceIfNecessary();
         AjaxBehavior ajaxBehavior = createAjaxBehavior(ctx, eventName);
         FacesContext context = ctx.getFacesContext();
         AjaxBehaviors ajaxBehaviors = AjaxBehaviors.getAjaxBehaviors(context, true);
@@ -174,7 +186,7 @@ public class BlurHandler extends TagHandlerImpl implements BehaviorHolderAttache
 
         AjaxBehavior ajaxBehavior = createAjaxBehavior(ctx, eventName);
         bHolder.addClientBehavior(eventName, ajaxBehavior);
-        installAjaxResourceIfNecessary();
+        installResourceIfNecessary();
     }
 
     private String getBlurId(final UIComponent parent) {
@@ -226,36 +238,50 @@ public class BlurHandler extends TagHandlerImpl implements BehaviorHolderAttache
         }
     }
 
-    private void installAjaxResourceIfNecessary() {
+    private void installResourceIfNecessary() {
 
         FacesContext context = FacesContext.getCurrentInstance();
 
-        if (RenderKitUtils.hasScriptBeenRendered(context)) {
-            return;
-        }
+        if (RequestStateManager.containsKey(context, SCRIPT_STATE_BLUR)) return;
 
-        final UIOutput jsf = getLibOutput(context, "jsf.js", "javax.faces", RENDER_TYPE_SCRIPT);
-        final UIOutput lavash = getLibOutput(context, "lavash.js", "ru.electrolavash", RENDER_TYPE_SCRIPT);
-        final UIOutput css = getLibOutput(context, "lavash.css", "ru.electrolavash", RENDER_TYPE_STYLE);
+        check(context, RESOURCE_NAME_JSF,        LIB_NAME_JSF,    RENDER_TYPE_SCRIPT);
+        check(context, RESOURCE_NAME_LAVASH_JS,  LIB_NAME_LAVASH, RENDER_TYPE_SCRIPT);
+        check(context, RESOURCE_NAME_LAVASH_CSS, LIB_NAME_LAVASH, RENDER_TYPE_STYLE);
 
-        if (jsf != null) context.getViewRoot().addComponentResource(context, jsf, "head");
-        if (lavash != null) context.getViewRoot().addComponentResource(context, lavash, "head");
-        if (css != null) context.getViewRoot().addComponentResource(context, css, "head");
-
-        RenderKitUtils.setScriptAsRendered(context);
+        RequestStateManager.set(context, SCRIPT_STATE_BLUR, Boolean.TRUE);
 
     }
 
-    private UIOutput getLibOutput(final FacesContext context, final String name, final String library, final String renderType) {
-        if (RenderKitUtils.hasResourceBeenInstalled(context, name, library)) {
-            RenderKitUtils.setScriptAsRendered(context);
-            return null;
-        }
+    private void check(final FacesContext context, final String name, final String library, final String renderType) {
+
+        if (isInstalled(context, name, library)) return;
+        if (isRendered(context, name, library)) return;
+
         UIOutput output = new UIOutput();
         output.setRendererType(renderType);
         output.getAttributes().put("name", name);
         output.getAttributes().put("library", library);
-        return output;
+        context.getViewRoot().addComponentResource(context, output, "head");
+    }
+
+    private boolean isRendered(FacesContext context, String _name, String _library) {
+        String resourceIdentifier = _library + ":" + _name;
+        Set<String> resourceIdentifiers = (Set<String>) context.getAttributes().get("/javax.faces.resource");
+        return resourceIdentifiers != null && resourceIdentifiers.contains(resourceIdentifier);
+    }
+
+    private boolean isInstalled(FacesContext context, String _name, String _library) {
+        UIViewRoot viewRoot = context.getViewRoot();
+        List<UIComponent> resources = new ArrayList<>();
+        resources.addAll(viewRoot.getComponentResources(context, "head"));
+        resources.addAll(viewRoot.getComponentResources(context, "form"));
+        resources.addAll(viewRoot.getComponentResources(context, "body"));
+        for (UIComponent resource : resources) {
+            Object name = resource.getAttributes().get("name");
+            Object library = resource.getAttributes().get("library");
+            if (_name.equals(name) && _library.equals(library)) return true;
+        }
+        return false;
     }
 
     private String getUnsupportedEventMessage(String eventName, Collection<String> eventNames, UIComponent parent) {
@@ -282,11 +308,11 @@ public class BlurHandler extends TagHandlerImpl implements BehaviorHolderAttache
 
 
 class AjaxBehaviorListenerImpll implements AjaxBehaviorListener, Serializable {
+
     private MethodExpression oneArgListener;
     private MethodExpression noArgListener;
 
-    public AjaxBehaviorListenerImpll() {
-    }
+    public AjaxBehaviorListenerImpll() {}
 
     public AjaxBehaviorListenerImpll(MethodExpression oneArg, MethodExpression noArg) {
         this.oneArgListener = oneArg;
@@ -298,10 +324,8 @@ class AjaxBehaviorListenerImpll implements AjaxBehaviorListener, Serializable {
         try {
             noArgListener.invoke(elContext, new Object[]{});
         } catch (MethodNotFoundException mnfe) {
-            // Attempt to call public void method(AjaxBehaviorEvent event)
             oneArgListener.invoke(elContext, new Object[]{event});
         } catch (IllegalArgumentException iae) {
-            // Attempt to call public void method(AjaxBehaviorEvent event)
             oneArgListener.invoke(elContext, new Object[]{event});
         }
     }
